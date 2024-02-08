@@ -16,7 +16,7 @@ jobs:
       with:
         dotnet-version: 8.0
     - name: Restore dependencies
-      run: dotnet restore ./src/ConsoleHost/ReleaseShip.ConsoleHost.csproj --configfile 
+      run: dotnet restore ./src/ConsoleHost/ReleaseShip.ConsoleHost.csproj
     - name: Build
       run: dotnet build ./src/ConsoleHost/ReleaseShip.ConsoleHost.csproj --no-restore
     - name: Test
