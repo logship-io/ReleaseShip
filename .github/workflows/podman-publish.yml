@@ -30,7 +30,7 @@ jobs:
     
     - name: Build the Podman image
       run: |
-        podman build ./src --file src/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
+        podman build . --file build/container/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
         podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
         podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
         podman push "ghcr.io/$REPO:latest"

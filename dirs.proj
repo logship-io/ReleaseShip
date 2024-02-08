@@ -3,7 +3,7 @@
   <ItemGroup>
     <!-- Build all projects recursively under the "src" folder -->
     <ProjectReference Include="src\dirs.proj" />
-    <ProjectReference Include="test\dirs.proj" />
+    <!-- <ProjectReference Include="test\dirs.proj" /> -->
   </ItemGroup>
 
 </Project>
