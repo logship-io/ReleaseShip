@@ -32,14 +32,14 @@ jobs:
     
     - name: Build the Podman image
       run: |
-        podman build ./src --file src/Containerfile --tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
-        podman tag ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME ghcr.io/$GITHUB_REPOSITORY:latest
+        podman build ./src --file src/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
+        podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
         
     - name: Push the Podman image
       if: ${{ github.event_name != 'pull_request' }}
       run: |
-        podman push ghcr.io/$GITHUB_REPOSITORY:$GITHUB_REF_NAME
-        podman push ghcr.io/$GITHUB_REPOSITORY:latest
+        podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
+        podman push "ghcr.io/$REPO:latest"
         
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
