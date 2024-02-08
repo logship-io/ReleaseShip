@@ -12,7 +12,6 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
     <PackageReference Include="System.Data.Common" />
-    <PackageReference Include="System.IO.Pipelines" />
   </ItemGroup>
 
 </Project>
