@@ -16,8 +16,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Restore dependencies
-      run: dotnet restore ./ConsoleHost/ReleaseShip.ConsoleHost.csproj
+      run: dotnet restore ./src/ConsoleHost/ReleaseShip.ConsoleHost.csproj
     - name: Build
-      run: dotnet build ./ConsoleHost/ReleaseShip.ConsoleHost.csproj --no-restore
+      run: dotnet build ./src/ConsoleHost/ReleaseShip.ConsoleHost.csproj --no-restore
     - name: Test
       run: dotnet test --no-build --verbosity normal
