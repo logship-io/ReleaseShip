@@ -4,7 +4,9 @@ on:
   push:
     tags:
       - v*
-
+  pull_request:
+    branches: [ "master" ]
+    
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -23,10 +25,15 @@ jobs:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
+    
     - name: Build the Podman image
       run: |
         podman build ./src --file src/Containerfile --tag ghcr.io/${{ github.repository }}:$GITHUB_REF_NAME
         podman tag ghcr.io/${{ github.repository }}:$GITHUB_REF_NAME ghcr.io/${{ github.repository }}:latest
+        
+    - name: Push the Podman image
+      if: ${{ github.event_name != 'pull_request' }}
+      run: |
         podman push ghcr.io/${{ github.repository }}:$GITHUB_REF_NAME
         podman push ghcr.io/${{ github.repository }}:latest
         
