@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.9.34407.89
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseShip.ConsoleHost", "ConsoleHost\ReleaseShip.ConsoleHost.csproj", "{11CC6FE1-BD77-4BF9-B00F-11441BA68973}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseShip.ConsoleHost", "src\ConsoleHost\ReleaseShip.ConsoleHost.csproj", "{11CC6FE1-BD77-4BF9-B00F-11441BA68973}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseShip.Data", "Data\ReleaseShip.Data\ReleaseShip.Data.csproj", "{E0A227C1-F886-4D96-94CD-3FD22AF910DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseShip.Data", "src\Data\ReleaseShip.Data\ReleaseShip.Data.csproj", "{E0A227C1-F886-4D96-94CD-3FD22AF910DC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseShip.Data.SQLite", "Data\ReleaseShip.Data.SQLite\ReleaseShip.Data.SQLite.csproj", "{FE6E369E-5651-4085-8965-552F60BCB5D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReleaseShip.Data.SQLite", "src\Data\ReleaseShip.Data.SQLite\ReleaseShip.Data.SQLite.csproj", "{FE6E369E-5651-4085-8965-552F60BCB5D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

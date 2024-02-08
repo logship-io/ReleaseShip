@@ -1,11 +1,9 @@
-name: Podman Image CI
+name: Container Image Publish
 
 on:
   push:
     tags:
       - v*
-  pull_request:
-    branches: [ "master" ]
     
 env:
   REGISTRY: ghcr.io
@@ -34,28 +32,24 @@ jobs:
       run: |
         podman build ./src --file src/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
         podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
-        
-    - name: Push the Podman image
-      if: ${{ github.event_name != 'pull_request' }}
-      run: |
         podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
         podman push "ghcr.io/$REPO:latest"
         
-    - name: Setup .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: ${{ env.DOTNET_VERSION }}
+    # - name: Setup .NET Core
+      # uses: actions/setup-dotnet@v3
+      # with:
+        # dotnet-version: ${{ env.DOTNET_VERSION }}
         
-    - name: Build
-      run: |
-        dotnet publish src/ConsoleHost/ReleaseShip.ConsoleHost.csproj -c Release -o out -r linux-x64
+    # - name: Build
+      # run: |
+        # dotnet publish src/ConsoleHost/ReleaseShip.ConsoleHost.csproj -c Release -o out -r linux-x64
     
-    - uses: "marvinpinto/action-automatic-releases@latest"
-      if: ${{ github.event_name != 'pull_request' }}
-      with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
-        prerelease: true
-        title: "ReleaseShip ${{ github.ref }}"
-        files: |
-          out/ReleaseShip.ConsoleHost
+    # - uses: "marvinpinto/action-automatic-releases@latest"
+      # if: ${{ github.event_name != 'pull_request' }}
+      # with:
+        # repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        # automatic_release_tag: "latest"
+        # prerelease: true
+        # title: "ReleaseShip ${{ github.ref }}"
+        # files: |
+          # out/*
