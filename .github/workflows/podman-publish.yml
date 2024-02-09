@@ -1,0 +1,55 @@
+name: Container Image Publish
+
+on:
+  push:
+    tags:
+      - v*
+    
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+  DOTNET_VERSION: '8.0.100'
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Log in to the Container registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: downcase REPO
+      run: |
+        echo "REPO=${GITHUB_REPOSITORY,,}" >>${GITHUB_ENV}
+    
+    - name: Build the Podman image
+      run: |
+        podman build . --file build/container/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
+        podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
+        podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
+        podman push "ghcr.io/$REPO:latest"
+        
+    # - name: Setup .NET Core
+      # uses: actions/setup-dotnet@v3
+      # with:
+        # dotnet-version: ${{ env.DOTNET_VERSION }}
+        
+    # - name: Build
+      # run: |
+        # dotnet publish src/ConsoleHost/ReleaseShip.ConsoleHost.csproj -c Release -o out -r linux-x64
+    
+    # - uses: "marvinpinto/action-automatic-releases@latest"
+      # if: ${{ github.event_name != 'pull_request' }}
+      # with:
+        # repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        # automatic_release_tag: "latest"
+        # prerelease: true
+        # title: "ReleaseShip ${{ github.ref }}"
+        # files: |
+          # out/*
