@@ -1,6 +1,5 @@
 **/bin/
 **/obj/
-**/global.json
 **/Containerfile*
 **/.dockerignore*
 **/*.user
