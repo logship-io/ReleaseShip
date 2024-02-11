@@ -4,7 +4,9 @@ on:
   push:
     tags:
       - v*
-    
+    branch:
+      - master
+
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -31,9 +33,14 @@ jobs:
     - name: Build the Podman image
       run: |
         podman build . --file build/container/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
-        podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
-        podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
-        podman push "ghcr.io/$REPO:latest"
+        if [[ $GITHUB_REF_NAME == v* ]]; then
+          podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
+          podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
+          podman push "ghcr.io/$REPO:latest"
+        else
+          podman tag "ghcr.io/$REPO:latest-pre"
+          podman push "ghcr.io/$REPO:latest-pre"
+        fi
         
     # - name: Setup .NET Core
       # uses: actions/setup-dotnet@v3
