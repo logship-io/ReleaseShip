@@ -32,13 +32,14 @@ jobs:
     
     - name: Build the Podman image
       run: |
-        podman build . --file build/container/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
+        
         if [[ $GITHUB_REF_NAME == v* ]]; then
+          podman build . --file build/container/Containerfile --tag "ghcr.io/$REPO:$GITHUB_REF_NAME"
           podman tag "ghcr.io/$REPO:$GITHUB_REF_NAME" "ghcr.io/$REPO:latest"
           podman push "ghcr.io/$REPO:$GITHUB_REF_NAME"
           podman push "ghcr.io/$REPO:latest"
         else
-          podman tag "ghcr.io/$REPO:latest-pre"
+          podman build . --file build/container/Containerfile --tag "ghcr.io/$REPO:latest-pre"
           podman push "ghcr.io/$REPO:latest-pre"
         fi
         
