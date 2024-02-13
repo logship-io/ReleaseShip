@@ -9,7 +9,7 @@ namespace ReleaseShip.Controllers
     public partial class BinaryDistributionController : ControllerBase
     {
 
-        const long MaxFileSize = 100L * 1024L * 1024L; // 100MB but that's insane
+        const long MaxFileSize = 1000L * 1024L * 1024L; // 1000MB but that's insane
 
         [LoggerMessage(LogLevel.Warning, "Invalid binary path. Path: {Path}; BinaryId: {BinaryId}")]
         internal static partial void log_InvalidBinaryPath(ILogger logger, int binaryId, string? path, Exception ex);
