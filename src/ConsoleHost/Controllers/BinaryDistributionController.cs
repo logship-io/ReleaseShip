@@ -121,9 +121,11 @@ namespace ReleaseShip.Controllers
                     };
                 }
 
+                string ext = Path.GetExtension(release.Path);
+                string filename = $"{release.ProjectId}_{release.PlatformId}{ext}";
                 var result = new FileStreamResult(stream, "application/octet-stream")
                 {
-                    FileDownloadName = Path.GetFileName(release.Path),
+                    FileDownloadName = filename,
                 };
 
                 log_BinaryDownload(logger, release.Id, release.Path);

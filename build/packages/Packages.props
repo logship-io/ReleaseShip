@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <PackageReference Update="AWSSDK.S3" Version="3.7.305.28" />
     <PackageReference Update="Dapper" Version="2.1.28" />
     <PackageReference Update="Microsoft.Data.Sqlite" Version="8.0.1" />
     <PackageReference Update="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />

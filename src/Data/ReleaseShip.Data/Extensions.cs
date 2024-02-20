@@ -9,7 +9,7 @@ namespace ReleaseShip.Data
         {
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
             return services
-                .AddTransient<IBinaryStorageService, FileBinaryStorageService>()
+                .AddTransient<IBinaryStorageService, S3BinaryStorageService>()
                 .AddTransient<IProjectStorageService, ProjectService>()
                 .AddTransient<IReleaseTagsService, ReleaseTagsService>()
                 .AddTransient<IPlatformService, PlatformService>()
