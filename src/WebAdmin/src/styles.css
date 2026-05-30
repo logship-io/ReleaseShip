@@ -1,0 +1,124 @@
+:root {
+  color-scheme: light;
+  font-family: Inter, system-ui, sans-serif;
+  background: #f6f7fb;
+  color: #18202a;
+}
+
+body {
+  margin: 0;
+}
+
+.app-shell {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.nav {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 16px 0 24px;
+}
+
+.nav-link,
+button {
+  border: 1px solid #cdd4df;
+  border-radius: 8px;
+  background: white;
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.inline-link {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: #1659d2;
+}
+
+.selected {
+  border-color: #1659d2;
+  background: #e9f0ff;
+}
+
+.danger {
+  border-color: #d43636;
+  color: #d43636;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid #dce3ef;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.panel ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.stack {
+  display: grid;
+  gap: 12px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+}
+
+input,
+select {
+  border: 1px solid #cdd4df;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.checkbox {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.muted {
+  color: #5e6b7d;
+}
+
+.badge-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.badge {
+  background: #eef2f8;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
+}
+
+.token-box {
+  background: #f5f8ff;
+  border: 1px solid #c8d7ff;
+  border-radius: 10px;
+  padding: 12px;
+}
+
+.error {
+  color: #c53434;
+}
+
+.success {
+  color: #14733c;
+}

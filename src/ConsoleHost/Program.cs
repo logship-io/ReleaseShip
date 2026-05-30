@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using ReleaseShip.ConsoleHost.Auth;
 using ReleaseShip.Data.Relational;
 using ReleaseShip.Data.Services;
 using ReleaseShip.Data.SQLite;
@@ -14,6 +16,10 @@ var builder = WebApplication.CreateBuilder(args);
 string connectionString = builder.Configuration.GetConnectionString("Default")!;
 
 builder.Services.AddReleaseShipSqlite(connectionString);
+builder.Services.AddAuthentication(BasicAuthenticationDefaults.AuthenticationScheme)
+    .AddScheme<AuthenticationSchemeOptions, BasicAuthenticationHandler>(
+        BasicAuthenticationDefaults.AuthenticationScheme,
+        _ => { });
 builder.Services.AddControllers(options =>
 {
     var xml = new XmlSerializerOutputFormatter(factory);
@@ -43,12 +49,20 @@ else
     });
 }
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapGet("/", () => "ReleaseShip Package Archive");
 
 var ctx = app.Services.GetRequiredService<IDatabaseContext>();
 await ReleaseShip.Data.Metadata.IDatabaseContextExtensions.InitializeDatabaseAsync(ctx, logger, cts.Token);
+var authService = app.Services.GetRequiredService<IContainerAuthenticationService>();
+await authService.EnsureBootstrapAdminAsync(
+    builder.Configuration.GetValue<string>("Authentication:BootstrapAdmin:Username") ?? string.Empty,
+    builder.Configuration.GetValue<string>("Authentication:BootstrapAdmin:Password") ?? string.Empty,
+    cts.Token);
 
 app.Run();
 
@@ -74,3 +88,7 @@ void UnobservedTaskException(object? sender, UnobservedTaskExceptionEventArgs e)
     Environment.Exit(-2);
 #pragma warning restore CA1848 // Use the LoggerMessage delegates
 };
+
+public partial class Program
+{
+}
