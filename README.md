@@ -4,7 +4,7 @@ ReleaseShip is an ASP.NET Core application for hosting release artifacts. It now
 
 - **binary artifact storage** for the existing package/release workflows
 - **OCI-style container registry flows** for blobs, manifests, and tags
-- **a small React admin UI** served by the same application at `/admin/`
+- **a small React management UI** served by the same application at `/`
 
 ## Repository layout
 
@@ -69,13 +69,13 @@ npm run build
 The React build writes static assets into:
 
 ```text
-src\ConsoleHost\wwwroot\admin
+src\ConsoleHost\wwwroot
 ```
 
 The ASP.NET host serves that bundle from:
 
 ```text
-/admin/
+/
 ```
 
 ## Container image build
@@ -89,7 +89,7 @@ docker build -f .\build\container\Containerfile -t releaseship:local .
 The container build now compiles the React admin UI automatically:
 
 1. `npm ci` runs in `src\WebAdmin`
-2. `npm run build` emits static files into `src\ConsoleHost\wwwroot\admin`
+2. `npm run build` emits static files into `src\ConsoleHost\wwwroot`
 3. `dotnet publish` packages the host and the generated UI into the final image
 
 ## Configuration
@@ -117,7 +117,7 @@ Primary configuration lives in:
 The bootstrap admin can:
 
 - access authenticated admin APIs
-- log into the React admin UI
+- log into the React management UI
 - issue scoped basic-auth tokens for registry operations
 
 ### Storage
@@ -141,7 +141,7 @@ Notes:
 - public repositories can allow anonymous container pulls
 - push/delete flows require authenticated access
 - protected tag patterns can block tag overwrite
-- admin APIs and admin UI actions are behind basic-auth login
+- admin APIs and authenticated management actions are behind basic-auth login
 - the public UI surfaces namespaces, public container repositories, and existing binary package listings
 
 ## Current validation

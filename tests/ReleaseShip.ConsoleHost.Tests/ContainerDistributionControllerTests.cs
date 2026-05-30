@@ -95,6 +95,29 @@ namespace ReleaseShip.ConsoleHost.Tests
             Assert.Equal(HttpStatusCode.Conflict, secondPush.StatusCode);
         }
 
+        [Fact]
+        public async Task PushOnlyTokenCanProbeExistingBlobDuringPush()
+        {
+            const string repositoryName = "demo/team/push-probe";
+            await CreateRepositoryAsync(repositoryName, new RegistryRepositoryPutModel()
+            {
+                Description = "push probe",
+                AllowAnonymousPull = false,
+                AllowDelete = true,
+                DefaultTagMutability = "mutable",
+            });
+
+            string digest = await UploadBlobAsync(CreateClientWithPassword(ReleaseShipApplicationFactory.BootstrapAdminUsername, ReleaseShipApplicationFactory.BootstrapAdminPassword), repositoryName, Encoding.UTF8.GetBytes("{\"config\":true}"));
+            var token = await IssueRepositoryTokenAsync(repositoryName, canPull: false, canPush: true, canDelete: false);
+            using var pushClient = CreateClientWithPassword(ReleaseShipApplicationFactory.BootstrapAdminUsername, token.Secret);
+
+            using var probeResponse = await pushClient.SendAsync(new HttpRequestMessage(HttpMethod.Head, $"/v2/{repositoryName}/blobs/{digest}"));
+            Assert.Equal(HttpStatusCode.OK, probeResponse.StatusCode);
+
+            using var blobResponse = await pushClient.GetAsync($"/v2/{repositoryName}/blobs/{digest}");
+            Assert.Equal(HttpStatusCode.Forbidden, blobResponse.StatusCode);
+        }
+
         private async Task CreateRepositoryAsync(string fullName, RegistryRepositoryPutModel model)
         {
             using var request = new HttpRequestMessage(HttpMethod.Put, $"/api/admin/registry/repositories/{fullName}")
@@ -106,7 +129,7 @@ namespace ReleaseShip.ConsoleHost.Tests
             Assert.Equal(HttpStatusCode.OK, response.StatusCode);
         }
 
-        private async Task<RegistryIssuedTokenModel> IssueRepositoryTokenAsync(string repositoryName, bool canDelete)
+        private async Task<RegistryIssuedTokenModel> IssueRepositoryTokenAsync(string repositoryName, bool canPull = true, bool canPush = true, bool canDelete = false)
         {
             using var request = new HttpRequestMessage(HttpMethod.Post, "/api/admin/auth/tokens")
             {
@@ -116,8 +139,8 @@ namespace ReleaseShip.ConsoleHost.Tests
                     Name = $"repo-token-{Guid.NewGuid():N}",
                     ScopeType = "repository",
                     ScopeValue = repositoryName,
-                    CanPull = true,
-                    CanPush = true,
+                    CanPull = canPull,
+                    CanPush = canPush,
                     CanDelete = canDelete,
                 }),
             };

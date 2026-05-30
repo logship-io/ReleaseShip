@@ -54,7 +54,7 @@ app.UseStaticFiles();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-app.MapGet("/", () => "ReleaseShip Package Archive");
+app.MapFallbackToFile("index.html");
 
 var ctx = app.Services.GetRequiredService<IDatabaseContext>();
 await ReleaseShip.Data.Metadata.IDatabaseContextExtensions.InitializeDatabaseAsync(ctx, logger, cts.Token);

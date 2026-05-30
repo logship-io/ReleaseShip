@@ -11,7 +11,7 @@ RUN cd src/WebAdmin && npm run build
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /build
 COPY . .
-COPY --from=web-build /build/src/ConsoleHost/wwwroot/admin ./src/ConsoleHost/wwwroot/admin
+COPY --from=web-build /build/src/ConsoleHost/wwwroot ./src/ConsoleHost/wwwroot
 RUN dotnet restore
 RUN dotnet publish -c Release --no-restore -o /app
 
