@@ -8,14 +8,14 @@ COPY src/WebAdmin ./src/WebAdmin
 COPY src/ConsoleHost ./src/ConsoleHost
 RUN cd src/WebAdmin && npm run build
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /build
 COPY . .
 COPY --from=web-build /build/src/ConsoleHost/wwwroot/admin ./src/ConsoleHost/wwwroot/admin
 RUN dotnet restore
 RUN dotnet publish -c Release --no-restore -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "ReleaseShip.ConsoleHost.dll"]
