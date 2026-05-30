@@ -12,7 +12,6 @@
     <PackageReference Include="Dapper" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" />
-    <PackageReference Include="System.Data.Common" />
   </ItemGroup>
 
 </Project>

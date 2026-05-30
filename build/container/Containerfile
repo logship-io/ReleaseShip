@@ -1,10 +1,21 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR build
+FROM node:20-bookworm-slim AS web-build
+WORKDIR /build
+COPY src/WebAdmin/package.json src/WebAdmin/package-lock.json ./src/WebAdmin/
+WORKDIR /build/src/WebAdmin
+RUN npm ci
+WORKDIR /build
+COPY src/WebAdmin ./src/WebAdmin
+COPY src/ConsoleHost ./src/ConsoleHost
+RUN cd src/WebAdmin && npm run build
+
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /build
 COPY . .
+COPY --from=web-build /build/src/ConsoleHost/wwwroot ./src/ConsoleHost/wwwroot
 RUN dotnet restore
 RUN dotnet publish -c Release --no-restore -o /app
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "ReleaseShip.ConsoleHost.dll"]
